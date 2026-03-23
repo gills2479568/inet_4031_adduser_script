@@ -14,15 +14,18 @@ import sys
 
 
 def main():
-
+    #Asks for user input must be a captial Y to run a dry run
     userInput = input("Run in dry run mode (Y/N)")
     
     if userInput == "Y":
         dry_run_mode = True
     else:
         dry_run_mode = False
+    # This is the input file for the users
+    input_file = "create-users.input"
 
-    for line in sys.stdin:
+    with open(input_file, 'r') as f:
+       for line in f:
 
         #Match is searching for the # character, # is being used to tell the program when a line should be skipped. The skipping is done in the if statement below
         match = re.match("^#",line)
@@ -32,9 +35,10 @@ def main():
 
         #This code checks if match is true and skips the line in the file, it checks if the line is 5 fields, any more or less and it is skipped.
         #The line needs to be 5 fields as that is what a user needs
-        if len(fields) !=5:
+        #Checks for a dry_run attempt
+        if len(fields) !=5 and user_input != "Y":
             print("Length of fields was not five")
-        if match:
+        if match and user_input != "Y":
             print("The line was skipped")
 
         if match or len(fields) != 5:
